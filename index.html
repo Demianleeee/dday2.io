@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lofi D-Day Widget</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* 배경 설정 */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* ▼▼▼ 여기에 이미지 주소를 넣어주세요 ▼▼▼ */
+            background-image: url(https://ibb.co/6R42VNMN); 
+            /* ▲▲▲ 예: https://i.imgur.com/abcd.png ▲▲▲ */
+            
+            background-size: cover; /* 이미지가 화면을 가득 채우도록 설정 */
+            background-position: center; /* 이미지 중앙 정렬 */
+        }
+
+        /* 시계 화면 영역 (텍스트가 표시될 위치) */
+        #clock-screen {
+            position: absolute;
+            /* 이미지 내 시계 화면의 대략적인 위치 및 크기 설정 (반응형을 위해 % 사용) */
+            top: 43%; 
+            left: 48%;
+            transform: translate(-50%, -50%) skewX(-5deg); /* 위치 보정 및 약간 기울임 */
+            width: 25%;  /* 너비 조절 */
+            height: 10%; /* 높이 조절 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border: 1px solid red; /* 위치 확인용 테두리 (필요시 주석 해제) */
+        }
+
+        /* D-Day 텍스트 스타일 */
+        #d-day-text {
+            font-family: 'Orbitron', sans-serif; /* 디지털 글꼴 적용 */
+            font-weight: 700;
+            /* 화면 크기에 따라 글자 크기 자동 조절 (vw 단위) */
+            font-size: 4vw; 
+            color: #afffff; /* 밝은 청록색 */
+            letter-spacing: 0.05em; /* 자간 조정 */
+            /* 네온 사인처럼 빛나는 효과 주기 */
+            text-shadow: 
+                0 0 5px #00efff,
+                0 0 10px #00efff,
+                0 0 20px #00aaff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock-screen">
+        <span id="d-day-text">Loading</span>
+    </div>
+
+    <script>
+        // ==========================================
+        // ▼ 기준 날짜를 수정하세요 (YYYY-MM-DD 형식)
+        const startDateString = "2024-06-17"; 
+        // ==========================================
+
+        function calculateDDay() {
+            const today = new Date();
+            const startDate = new Date(startDateString);
+
+            // 시간을 0시 0분 0초로 초기화
+            today.setHours(0, 0, 0, 0);
+            startDate.setHours(0, 0, 0, 0);
+
+            const timeDiff = today - startDate;
+            const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            // 텍스트가 들어갈 요소 선택
+            const textElement = document.getElementById("d-day-text");
+
+            // 날짜 표시 로직
+            if (dayDiff >= 0) {
+                textElement.innerText = "D+" + dayDiff; 
+            } else {
+                textElement.innerText = "D" + dayDiff;
+            }
+        }
+
+        // 실행 및 반복
+        calculateDDay();
+        setInterval(calculateDDay, 60000);
+    </script>
+</body>
+</html>
